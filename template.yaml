@@ -1,0 +1,42 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: simple-nodejs-service
+  title: Simple Node.js Service
+  description: Template to create a basic Node.js backend service
+  owner: user:guest
+spec:
+  type: service
+  parameters:
+    - name: projectName
+      description: What’s the name of your project?
+      required: true
+    - name: description
+      description: Brief description of your project
+      required: false
+    - name: owner
+      description: Who owns this project?
+      required: true
+
+  steps:
+    - id: fetch-template
+      name: Fetch template files
+      action: fetch:template
+      input:
+        url: https://github.com/sreepathysois/cafe-static-website
+        targetPath: ./ # Optional — specifies where to copy files
+
+    - id: publish-repo
+      name: Create GitHub repository and push code
+      action: github:repo:push
+      input:
+        repoUrl: github.com?owner=my-org&repo=${{ parameters.projectName }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+        protectDefaultBranch: true
+
+    - id: register-component
+      name: Register component in Backstage catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: https://github.com/my-org/${{ parameters.projectName }}
