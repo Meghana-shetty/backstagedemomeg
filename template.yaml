@@ -7,6 +7,7 @@ metadata:
   owner: user:guest
 spec:
   type: service
+
   parameters:
     - name: projectName
       description: What’s the name of your project?
@@ -24,13 +25,13 @@ spec:
       action: fetch:template
       input:
         url: https://github.com/sreepathysois/cafe-static-website
-        targetPath: ./ # Optional — specifies where to copy files
+        targetPath: ./
 
     - id: publish-repo
       name: Create GitHub repository and push code
       action: github:repo:push
       input:
-        repoUrl: github.com?owner=my-org&repo=${{ parameters.projectName }}
+        repoUrl: github.com?owner=Meghana-shetty&repo=${{ parameters.projectName }}
         defaultBranch: main
         description: ${{ parameters.description }}
         protectDefaultBranch: true
@@ -39,4 +40,5 @@ spec:
       name: Register component in Backstage catalog
       action: catalog:register
       input:
-        repoContentsUrl: https://github.com/my-org/${{ parameters.projectName }}
+        repoContentsUrl: https://github.com/Meghana-shetty/${{ parameters.projectName }}
+        catalogInfoPath: catalog-info.yaml
