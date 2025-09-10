@@ -1,46 +1,88 @@
 apiVersion: scaffolder.backstage.io/v1beta3
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: create-new-github-repo-from-url
-  title: Create new GitHub Repo from URL
-  description: Scaffold a new GitHub repo by cloning files from a source GitHub URL
-  tags:
-    - github
-    - repo
+  name: example-nodejs-template
+  title: Example Node.js Template
+  description: An example template for the scaffolder that creates a simple Node.js service
 spec:
+  owner: user:guest
+  type: service
+
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
   parameters:
-    - title: GitHub source repo URL
-      description: URL of the existing GitHub repo to clone files from
-      type: string
-      name: sourceRepoUrl
-    - title: New GitHub repo name
-      description: Name of the new GitHub repo to create
-      type: string
-      name: newRepoName
-    - title: GitHub owner
-      description: Owner or organization of the new repo
-      type: string
-      name: newRepoOwner
+    - title: Fill in some steps
+      required:
+        - name
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  # These steps are executed in the scaffolder backend, using data that we gathered
+  # via the parameters above.
   steps:
-    - id: fetch-source
-      name: Fetch source repository
+    # Each step executes an action, in this case one templates files into the working directory.
+    - id: fetch-base
+      name: Fetch Base
       action: fetch:template
       input:
-        url: '{{ parameters.sourceRepoUrl }}'
-        targetPath: './template-source'
+        url: ./content
+        values:
+          name: ${{ parameters.name }}
 
-    - id: create-repo
-      name: Create new GitHub repository
-      action: github:create-repo
+    # This step publishes the contents of the working directory to GitHub.
+    # If you or your organization prefer another default branch name over 'main'
+    # you can change that here.
+    - id: publish
+      name: Publish
+      action: publish:github
       input:
-        repoName: '{{ parameters.newRepoName }}'
-        repoVisibility: 'public'
-        owner: '{{ parameters.newRepoOwner }}'
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: 'main'
 
-    - id: publish-to-new-repo
-      name: Push files to new repository
-      action: github:publish
+    # The final step is to register our new component in the catalog.
+    - id: register
+      name: Register
+      action: catalog:register
       input:
-        repoUrl: 'https://github.com/{{ parameters.newRepoOwner }}/{{ parameters.newRepoName }}.git'
-        directory: './template-source'
-        accessToken: ${{ secrets.GITHUB_TOKEN }}
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+    # Let's notify the user that the template has completed using the Notification action
+    - id: notify
+      name: Notify
+      action: notification:send
+      input:
+        recipients: entity
+        entityRefs:
+          - user:default/guest
+        title: 'Template executed'
+        info: 'Your template has been executed'
+        severity: 'normal'
+
+  # Outputs are displayed to the user after a successful execution of the template.
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
