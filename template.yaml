@@ -9,9 +9,20 @@ spec:
   type: service
 
   parameters:
-    - name: projectName
-      description: What’s the name of your project?
-      required: true
+
+    - title: Fill in some steps
+      required:
+        -name
+      properties:
+        name: 
+          title: projectName
+          type: string
+          description: What’s the name of your project?
+
+    - title: Choose a Location
+      required:
+        -description
+      properties:
     - name: description
       description: Brief description of your project
       required: false
