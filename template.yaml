@@ -1,55 +1,46 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: simple-nodejs-service
-  title: Project_Practice Node.js Service
-  description: Template to create a basic Node.js backend service
-  owner: user:guest
+  name: create-new-github-repo-from-url
+  title: Create new GitHub Repo from URL
+  description: Scaffold a new GitHub repo by cloning files from a source GitHub URL
+  tags:
+    - github
+    - repo
 spec:
-  type: service
-
   parameters:
-
-    - title: Fill in some steps
-      required:
-        -name
-      properties:
-        name: 
-          title: projectName
-          type: string
-          description: What’s the name of your project?
-
-    - title: Choose a Location
-      required:
-        -description
-      properties:
-    - name: description
-      description: Brief description of your project
-      required: false
-    - name: owner
-      description: Who owns this project?
-      required: true
-
+    - title: GitHub source repo URL
+      description: URL of the existing GitHub repo to clone files from
+      type: string
+      name: sourceRepoUrl
+    - title: New GitHub repo name
+      description: Name of the new GitHub repo to create
+      type: string
+      name: newRepoName
+    - title: GitHub owner
+      description: Owner or organization of the new repo
+      type: string
+      name: newRepoOwner
   steps:
-    - id: fetch-template
-      name: Fetch template files
+    - id: fetch-source
+      name: Fetch source repository
       action: fetch:template
       input:
-        url: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana/cafe-static-website
-        targetPath: ./
+        url: '{{ parameters.sourceRepoUrl }}'
+        targetPath: './template-source'
 
-    - id: publish-repo
-      name: Create GitHub repository and push code
-      action: github:repo:push
+    - id: create-repo
+      name: Create new GitHub repository
+      action: github:create-repo
       input:
-        repoUrl: github.com?owner=Meghana-shetty&repo=${{ parameters.projectName }}
-        defaultBranch: main
-        description: ${{ parameters.description }}
-        protectDefaultBranch: true
+        repoName: '{{ parameters.newRepoName }}'
+        repoVisibility: 'public'
+        owner: '{{ parameters.newRepoOwner }}'
 
-    - id: register-component
-      name: Register component in Backstage catalog
-      action: catalog:register
+    - id: publish-to-new-repo
+      name: Push files to new repository
+      action: github:publish
       input:
-        repoContentsUrl: https://github.com/Meghana-shetty/${{ parameters.projectName }}
-        catalogInfoPath: catalog-info.yaml
+        repoUrl: 'https://github.com/{{ parameters.newRepoOwner }}/{{ parameters.newRepoName }}.git'
+        directory: './template-source'
+        accessToken: ${{ secrets.GITHUB_TOKEN }}
