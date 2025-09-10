@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: simple-nodejs-service
-  title: Simple Node.js Service
+  title: Project_Practice Node.js Service
   description: Template to create a basic Node.js backend service
   owner: user:guest
 spec:
@@ -24,7 +24,7 @@ spec:
       name: Fetch template files
       action: fetch:template
       input:
-        url: https://github.com/sreepathysois/cafe-static-website
+        url: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana/cafe-static-website
         targetPath: ./
 
     - id: publish-repo
