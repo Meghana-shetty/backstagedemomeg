@@ -9,29 +9,31 @@ spec:
   type: service
 
   parameters:
-
-    - title: Fill in some steps
+    - title: Fill in project details
       required:
-        -name
+        - name
+        - description
+        - owner
       properties:
-        name: 
-          title: projectName
+        name:
+          title: Project Name
           type: string
           description: What’s the name of your project?
           ui:autofocus: true
-          ui:options:
-            rows: 5
 
-    - title: Choose a Location
-      required:
-        -description
-      properties:
-    - name: description
-      description: Brief description of your project
-      required: false
-    - name: owner
-      description: Who owns this project?
-      required: true
+        description:
+          title: Project Description
+          type: string
+          description: Brief description of your project
+
+        owner:
+          title: Owner
+          type: string
+          description: Who owns this project?
+
+    - title: Choose a location for the new repo
+      required: []
+      properties: {}
 
   steps:
     - id: fetch-template
@@ -39,13 +41,13 @@ spec:
       action: fetch:template
       input:
         url: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana/cafe-static-website
-        targetPath: ./
+        targetPath: .
 
     - id: publish-repo
       name: Create GitHub repository and push code
       action: github:repo:push
       input:
-        repoUrl: github.com?owner=Meghana-shetty&repo=${{ parameters.projectName }}
+        repoUrl: github.com?owner=Meghana-shetty&repo=${{ parameters.name }}
         defaultBranch: main
         description: ${{ parameters.description }}
         protectDefaultBranch: true
@@ -54,5 +56,5 @@ spec:
       name: Register component in Backstage catalog
       action: catalog:register
       input:
-        repoContentsUrl: https://github.com/Meghana-shetty/${{ parameters.projectName }}
+        repoContentsUrl: https://github.com/Meghana-shetty/${{ parameters.name }}
         catalogInfoPath: catalog-info.yaml
