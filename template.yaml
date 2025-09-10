@@ -4,31 +4,33 @@ metadata:
   name: simple-nodejs-service
   title: Project_Practice Node.js Service
   description: Template to create a basic Node.js backend service
-  owner: user:guest
 spec:
+  owner: user:guest
   type: service
 
   parameters:
-
-    - title: Fill in some steps
-      required:
-        -name
-      properties:
-        name: 
-          title: projectName
-          type: string
-          description: What’s the name of your project?
-
-    - title: Choose a Location
-      required:
-        -description
-      properties:
-    - name: description
-      description: Brief description of your project
-      required: false
-    - name: owner
-      description: Who owns this project?
-      required: true
+  - title: Fill in some steps
+    required:
+      - name
+    properties:
+      name:
+        title: Name
+        type: string
+        description: Unique name of the component
+        ui:autofocus: true
+        ui:options:
+          rows: 5
+  - title: Choose a location
+    required:
+      - repoUrl
+    properties:
+      repoUrl:
+        title: Repository Location
+        type: string
+        ui:field: RepoUrlPicker
+        ui:options:
+          allowedHosts:
+            - github.com
 
   steps:
     - id: fetch-template
