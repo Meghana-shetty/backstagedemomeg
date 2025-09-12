@@ -39,8 +39,6 @@ spec:
     #     repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
     #     description: ${{ parameters.description }}
     #     repoVisibility: public
-
-    steps:
    - id: fetchBase
      name: Fetch Base
      action: fetch:template
