@@ -20,32 +20,38 @@ spec:
           type: string
           description: What’s the name of your project?
           ui:autofocus: true
-
         description:
           title: Project Description
           type: string
           description: Brief description of your project
-
         owner:
           title: Owner
           type: string
           description: Who owns this project?
 
   steps:
+    - id: fetch-template
+      name: Fetch template files
+      action: fetch:template
+      input:
+        url: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana/cafe-static-website
+        targetPath: .
 
-      - id: fetch-template
-        name: Fetch template files
-        action: fetch:template
-        input:
-          url: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana/cafe-static-website
-          targetPath: .
-    
-      - id: push-to-repo
-        name: Push code to GitHub
-        action: publish:github
-        input:
-          repoUrl: https://github.com/${{ parameters.owner }}/${{ parameters.name }}.git
-          defaultBranch: main
+    - id: push-to-repo
+      name: Push code to GitHub
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+
+    - id: register-component
+      name: Register component in Backstage catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: https://github.com/${{ parameters.owner }}/${{ parameters.name }}
+        catalogInfoPath: /catalog-info.yaml
+
     # - id: create-repo
     #   name: Create new GitHub repo
     #   action: github:create-repo
