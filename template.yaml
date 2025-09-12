@@ -37,8 +37,7 @@ spec:
         name: Fetch template files
         action: fetch:template
         input:
-          url: https://github.com/Meghana-shetty/Cafe_static_copy.git
-          path: Backstage_Meghana/cafe-static-website
+          url: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana/cafe-static-website
           targetPath: .
     
       - id: push-to-repo
