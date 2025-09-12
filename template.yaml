@@ -42,7 +42,7 @@ spec:
     
       - id: push-to-repo
         name: Push code to GitHub
-        action: github:push
+        action: publish:github
         input:
           repoUrl: https://github.com/${{ parameters.owner }}/${{ parameters.name }}.git
           defaultBranch: main
