@@ -32,13 +32,13 @@ spec:
           description: Who owns this project?
 
   steps:
-    - id: create-repo
-      name: Create new GitHub repo
-      action: github:create-repo
-      input:
-        repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
-        description: ${{ parameters.description }}
-        repoVisibility: public
+    # - id: create-repo
+    #   name: Create new GitHub repo
+    #   action: github:create-repo
+    #   input:
+    #     repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
+    #     description: ${{ parameters.description }}
+    #     repoVisibility: public
     
     - id: fetch-template
       name: Fetch template files
