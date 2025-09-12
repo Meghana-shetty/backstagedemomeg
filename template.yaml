@@ -31,16 +31,12 @@ spec:
           type: string
           description: Who owns this project?
 
-    - title: Choose a location for the new repo
-      required: []
-      properties: {}
-
   steps:
     - id: create-repo
       name: Create new GitHub repo
       action: github:create-repo
       input:
-        repoUrl: github.com?owner=Meghana-shetty&repo=${{ parameters.name }}
+        repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
         description: ${{ parameters.description }}
         repoVisibility: public
     
@@ -55,12 +51,12 @@ spec:
       name: Push code to GitHub
       action: github:push
       input:
-        repoUrl: github.com?owner=Meghana-shetty&repo=${{ parameters.name }}
+        repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
         defaultBranch: main
 
-    - id: register-component
-      name: Register component in Backstage catalog
-      action: catalog:register
-      input:
-        repoContentsUrl: https://github.com/Meghana-shetty/${{ parameters.name }}
-        catalogInfoPath: catalog-info.yaml
+    # - id: register-component
+    #   name: Register component in Backstage catalog
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: https://github.com/${{ parameters.owner }}/${{ parameters.name }}
+    #     catalogInfoPath: catalog-info.yaml
