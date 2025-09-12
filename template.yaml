@@ -39,13 +39,13 @@ spec:
     #     repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
     #     description: ${{ parameters.description }}
     #     repoVisibility: public
-   - id: fetchBase
-     name: Fetch Base
-     action: fetch:template
-     input:
-        url: ./skeleton
-        cookiecutterCompat: true
-        values:
+   # - id: fetchBase
+   #   name: Fetch Base
+   #   action: fetch:template
+   #   input:
+   #      url: ./skeleton
+   #      cookiecutterCompat: true
+   #      values:
     
     - id: fetch-template
       name: Fetch template files
