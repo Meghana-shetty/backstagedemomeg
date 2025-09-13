@@ -46,6 +46,12 @@ spec:
         repoVisibility: public
         description: ${{ parameters.description }}
 
+    - id: waitForGitHub
+      name: Wait for GitHub to update
+      action: sleep
+      input:
+        duration: 10s
+
     - id: register-component
       name: Register component in Backstage catalog
       action: catalog:register
