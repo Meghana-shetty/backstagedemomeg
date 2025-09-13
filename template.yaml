@@ -43,7 +43,7 @@ spec:
       input:
         repoUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
         defaultBranch: main
-        visibility: public
+        repoVisibility: public
         description: ${{ parameters.description }}
 
     - id: register-component
