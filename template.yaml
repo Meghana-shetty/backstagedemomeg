@@ -53,6 +53,12 @@ spec:
         repoContentsUrl: https://github.com/${{ parameters.owner }}/${{ parameters.name }}
         catalogInfoPath: /catalog-info.yaml
 
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['push-to-repo'].output.repoUrl }}
+
+
     # - id: create-repo
     #   name: Create new GitHub repo
     #   action: github:create-repo
