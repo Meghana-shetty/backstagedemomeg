@@ -45,13 +45,7 @@ spec:
         defaultBranch: main
         repoVisibility: public
         description: ${{ parameters.description }}
-
-    - id: etchCatalogInfo
-      name: Fetch catalog-info.yaml
-      action: fetch:plain
-      input:
-        url: https://raw.githubusercontent.com/${{ parameters.owner }}/${{ parameters.repo }}/main/catalog-info.yaml
-
+        
     - id: register-component
       name: Register component in Backstage catalog
       action: catalog:register
