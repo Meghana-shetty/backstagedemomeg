@@ -50,7 +50,7 @@ spec:
       name: Register component in Backstage catalog
       action: catalog:register
       input:
-        repoContentsUrl: https://github.com/${{ parameters.owner }}/${{ parameters.name }}
+        repoContentsUrl: https://raw.githubusercontent.com/${{ parameters.owner }}/${{ parameters.name }}/main
         catalogInfoPath: '/catalog-info.yaml'
 
   output:
