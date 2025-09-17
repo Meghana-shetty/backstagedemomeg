@@ -52,7 +52,7 @@ spec:
       input:
         repoContentsUrl: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana
         #https://github.com/${{ parameters.owner }}/${{ parameters.name }}
-        catalogInfoPath: cafe-static-website/catalog-info.yaml
+        catalogInfoPath: cafe-static-website/
 
   output:
     links:
