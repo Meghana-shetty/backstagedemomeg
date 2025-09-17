@@ -50,7 +50,7 @@ spec:
       name: Register component in Backstage catalog
       action: catalog:register
       input:
-        repoContentsUrl: github.com?owner=${{ parameters.owner }}&repo=${{ parameters.name }}
+        repoContentsUrl: https://github.com/Meghana-shetty/Cafe_static_copy/tree/main/Backstage_Meghana/cafe-static-website
         #https://github.com/${{ parameters.owner }}/${{ parameters.name }}
         catalogInfoPath: /catalog-info.yaml
 
