@@ -8,3 +8,4 @@ catalog:
         - allow: [Template]
     - type: file
       target: template.yaml
+here project we are creating the repo and pushing user code(cafe static) to that repo.
